@@ -1,6 +1,5 @@
 class Weather {}
 
-
 // example 
 
 // User.fromJson(Map<String, dynamic> json)
