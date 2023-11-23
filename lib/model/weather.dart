@@ -1,12 +1,8 @@
-class Weather {}
+class Weather {
+  final String main, temp, desc;
 
-// example 
-
-// User.fromJson(Map<String, dynamic> json)
-//       : name = json['name'] as String,
-//         email = json['email'] as String;
-
-//   Map<String, dynamic> toJson() => {
-//         'name': name,
-//         'email': email,
-//       };
+  Weather.fromJson(Map<String, dynamic> json)
+      : main = json['weather'][0]['main'] as String,
+        desc = json['weather'][0]['description'] as String,
+        temp = json['main']['temp'].toString();
+}
