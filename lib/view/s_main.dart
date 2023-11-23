@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_weather_app/constants/palette.dart';
 import 'package:flutter_weather_app/constants/paths.dart';
 import 'package:flutter_weather_app/model/weather.dart';
-import 'package:flutter_weather_app/service/api_service.dart';
 import 'package:flutter_weather_app/view/w_weather_lottie.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:lottie/lottie.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
