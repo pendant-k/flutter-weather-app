@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_animated_button/flutter_animated_button.dart';
 import 'package:flutter_weather_app/constants/palette.dart';
 import 'package:flutter_weather_app/constants/paths.dart';
 import 'package:flutter_weather_app/model/weather.dart';
@@ -93,13 +94,27 @@ class _MainScreenState extends State<MainScreen> {
                         color: Palette.text,
                       ),
                     ),
-                    ElevatedButton(
+                    SizedBox(
+                      width: 200,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Palette.point,
+                        ),
                         onPressed: () {
                           setState(() {
-                            currentWeather = currentWeather = ApiService.getCurrentWeather();
+                            currentWeather = ApiService.getCurrentWeather();
                           });
                         },
-                        child: Text('Refresh'))
+                        child: Text(
+                          'Refresh',
+                          style: GoogleFonts.roboto(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Palette.text,
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
