@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_weather_app/constants/palette.dart';
 import 'package:flutter_weather_app/constants/paths.dart';
+import 'package:flutter_weather_app/model/weather.dart';
 import 'package:flutter_weather_app/service/api_service.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 
 enum WeatherType { Clear, Clouds, Rain, Snow, Thunderstorm, Drizzle, Atmosphere }
@@ -16,14 +18,20 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  late Future<Weather> currentWeather;
+  @override
+  void initState() {
+    currentWeather = ApiService.getCurrentWeather();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xff0b121e),
       body: FutureBuilder(
-          future: ApiService.getCurrentWeather(),
+          future: currentWeather,
           builder: (context, snapshot) {
-            print(snapshot.data);
             if (snapshot.hasError)
               return Center(
                 child: Container(
@@ -49,8 +57,8 @@ class _MainScreenState extends State<MainScreen> {
               return Center(
                 child: Lottie.asset(
                   Paths.loadingAnimation,
-                  width: 180,
-                  height: 180,
+                  width: 200,
+                  height: 200,
                 ),
               );
             return SingleChildScrollView(
@@ -62,30 +70,36 @@ class _MainScreenState extends State<MainScreen> {
                   children: [
                     Text(
                       'SEOUL',
-                      style: TextStyle(
-                        fontSize: 70,
+                      style: GoogleFonts.roboto(
+                        fontSize: 64,
                         color: Palette.text,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                     SizedBox(height: 40),
-                    CircleAvatar(
-                      radius: 80,
-                    ),
-                    SizedBox(height: 20),
+                    createWeatherAnimation(snapshot.data!.main),
                     Text(
                       '${snapshot.data!.desc}',
-                      style: TextStyle(
+                      style: GoogleFonts.roboto(
                         fontSize: 24,
                         color: Palette.text,
                       ),
                     ),
                     Text(
                       '${snapshot.data!.temp}°C',
-                      style: TextStyle(
-                        fontSize: 64,
+                      style: GoogleFonts.roboto(
+                        fontSize: 60,
+                        fontWeight: FontWeight.bold,
                         color: Palette.text,
                       ),
                     ),
+                    ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            currentWeather = currentWeather = ApiService.getCurrentWeather();
+                          });
+                        },
+                        child: Text('Refresh'))
                   ],
                 ),
               ),
@@ -100,24 +114,31 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Widget createWeatherAnimation(String param) {
+    var url = "";
     switch (param) {
       case "Clear":
-        return Container();
+        url = Paths.clear;
+        break;
       case "Clouds":
-        return Container();
+        url = Paths.clouds;
+        break;
       case "Rain":
-        return Container();
+        url = Paths.rain;
+        break;
       case "Snow":
-        return Container();
+        url = Paths.snow;
+        break;
       case "Thunderstorm":
-        return Container();
+        url = Paths.storm;
+        break;
       case "Drizzle":
-        return Container();
+        url = Paths.drizzle;
+        break;
       case "Atmosphere":
-        return Container();
       default:
-        return Container();
+        url = Paths.atmosphere;
     }
+    return WeatherLottieWidget(url: url);
   }
 }
 
